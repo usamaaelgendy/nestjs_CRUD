@@ -14,3 +14,6 @@ async function bootstrap() {
 }
 
 bootstrap().then(() => {});
+
+// nest g resource [name]
+// nest g controller [name]
