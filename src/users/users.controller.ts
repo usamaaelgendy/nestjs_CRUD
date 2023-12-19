@@ -7,6 +7,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UserEntity } from './user.entity';
@@ -20,7 +21,10 @@ export class UsersController {
   private readonly users: UserEntity[] = [];
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto): UserEntity {
+  create(
+    @Body(new ValidationPipe({ groups: ['create'] }))
+    createUserDto: CreateUserDto,
+  ): UserEntity {
     return this.userService.create(createUserDto);
   }
 
@@ -37,7 +41,8 @@ export class UsersController {
   @Patch(':id')
   updateUser(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body(new ValidationPipe({ groups: ['update'] }))
+    updateUserDto: UpdateUserDto,
   ): UpdateUserDto {
     return this.userService.update(id, updateUserDto);
   }
