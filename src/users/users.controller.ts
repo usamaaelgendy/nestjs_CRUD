@@ -9,13 +9,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CreateUserDto } from './dtos/create-user.dto';
-import { UserEntity } from './user.entity';
-import { UpdateUserDto } from './dtos/update-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UserEntity } from './entities/user.entity';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './users.service';
-import { CustomValidationPipe } from './pipes/validation.pipe';
+import { AgeValidationPipe } from './pipes/age-validation.pipe';
 
-@Controller('user')
+@Controller('users')
 export class UsersController {
   constructor(private userService: UserService) {}
 
@@ -23,32 +23,30 @@ export class UsersController {
 
   @Post()
   create(
-    @Body()
+    @Body(AgeValidationPipe)
     createUserDto: CreateUserDto,
   ): UserEntity {
     return this.userService.create(createUserDto);
   }
 
+  @Patch(':id')
+  updateUser(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body(AgeValidationPipe)
+    updateUserDto: UpdateUserDto,
+  ): UpdateUserDto {
+    return this.userService.updateUser(id, updateUserDto);
+  }
+
   @Get()
-  findAll(
-    @Query('username', CustomValidationPipe) username: string,
-  ): UserEntity[] {
-    console.log('username : ', username);
+  findAll(@Query('username') username: string): UserEntity[] {
+    console.log(username);
     return this.userService.findAllUsers();
   }
 
   @Get(':id')
   findById(@Param('id', ParseUUIDPipe) id: string): UserEntity {
     return this.userService.findUserById(id);
-  }
-
-  @Patch(':id')
-  updateUser(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body()
-    updateUserDto: UpdateUserDto,
-  ): UpdateUserDto {
-    return this.userService.updateUser(id, updateUserDto);
   }
 
   @Delete(':id')

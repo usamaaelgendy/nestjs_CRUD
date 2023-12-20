@@ -22,3 +22,4 @@ bootstrap().then(() => {});
 // nest g resource [name]
 // nest g controller [name]
 // nest g service cats
+// nest g module cats
