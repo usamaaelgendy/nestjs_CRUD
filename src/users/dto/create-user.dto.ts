@@ -1,6 +1,5 @@
 import {
   IsEmail,
-  IsIn,
   IsInt,
   IsNotEmpty,
   IsOptional,
