@@ -17,22 +17,22 @@ export class UserService {
     return newUser;
   }
 
-  findAll(): UserEntity[] {
+  findAllUsers(): UserEntity[] {
     return this.users;
   }
 
-  findById(id: string): UserEntity {
+  findUserById(id: string): UserEntity {
     return this.users.find((user) => user.id === id);
   }
 
-  update(id: string, updateUserDto: UpdateUserDto): UserEntity {
+  updateUser(id: string, updateUserDto: UpdateUserDto): UserEntity {
     const userIndex = this.users.findIndex((user) => user.id === id);
     this.users[userIndex] = { ...this.users[userIndex], ...updateUserDto };
 
     return this.users[userIndex];
   }
 
-  remove(id: string): boolean {
+  removeUser(id: string): boolean {
     const userIndex = this.users.findIndex((user) => user.id === id);
     this.users.splice(userIndex, 1);
     return true;
